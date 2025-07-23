@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashVieww</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: black;
+            color: #e2e8f0;
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-heading {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        @media (min-width: 768px) {
+            .hero-heading {
+                font-size: 2.5rem;
+            }
+
+            .other-heading {
+                font-size: 1.8rem;
+            }
+        }
+
+        .other-heading {
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        .upload-button {
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.75rem;
+            padding: 10px 1.2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.15s ease-in-out;
+            background-color: #ffffff;
+            color: #1a202c;
+        }
+
+        .upload-button:hover {
+            background-color: #e2e8f0;
+        }
+
+        .section-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+        }
+
+        .card-bg {
+            background-color: #1b1c1e;
+            color: #e2e8f0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 220px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .percentage-change {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        .percentage-increase {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .percentage-decrease {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+
+        .dot-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .dot-purple {
+            background-color: #9333ea;
+        }
+
+        .dot-pink {
+            background-color: #db2777;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white">
+
+    <nav class="dashboard-bg w-full mx-auto px-4 py-6 flex items-center justify-between overflow-hidden ">
+        <div class="flex items-center">
+            <span class="text-2xl font-semibold text-white">DashVieww</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+            <a href="{{ url_for('index') }}#home" class="text-gray-300 hover:text-white font-medium">Home</a>
+            <a href="{{ url_for('index') }}#features" class="text-gray-300 hover:text-white font-medium">Features</a>
+            <a href="{{ url_for('index') }}#how-it-works" class="text-gray-300 hover:text-white font-medium">How It
+                Works</a>
+            <a href="{{ url_for('index') }}#faq" class="text-gray-300 hover:text-white font-medium">FAQ</a>
+        </div>
+        <div class="hidden md:flex space-x-4">
+            <button
+                class="upload-button bg-white text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out font-semibold shadow-md text-sm flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4">
+                    </path>
+                </svg>
+                Get Data
+            </button>
+        </div>
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-gray-300 focus:outline-none" aria-controls="mobile-menu"
+                aria-expanded="false" aria-label="Toggle mobile menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="hidden md:hidden dashboard-bg px-4 pt-2 pb-4 space-y-2 ">
+        <a href="{{ url_for('index') }}#home" class="block text-gray-300 hover:text-white font-medium py-2">Home</a>
+        <a href="{{ url_for('index') }}#features"
+            class="block text-gray-300 hover:text-white font-medium py-2">Features</a>
+        <a href="{{ url_for('index') }}#how-it-works" class="block text-gray-300 hover:text-white font-medium py-2">How
+            It
+            Works</a>
+        <a href="{{ url_for('index') }}#faq" class="block text-gray-300 hover:text-white font-medium py-2">FAQ</a>
+        <button
+            class="upload-button w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold transition duration-300 ease-in-out text-sm flex items-center justify-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4">
+                </path>
+            </svg>
+            Get Data
+        </button>
+    </div>
+
+    <main class="container mx-auto px-4 py-6 md:py-10">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold text-white mb-3">Professional Sales & Profit Dashboard</h1>
+            <p class="text-gray-400 text-base">Gain insightful analytics from your uploaded sales data.</p>
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="card-bg p-5 rounded-xl shadow-lg">
+                <h2 class="text-white text-lg font-semibold mb-3">Daily Sales Trend</h2>
+                <div class="chart-container">
+                    {% if dashboard_data.daily_sales_chart %}
+                    <img src="{{ dashboard_data.daily_sales_chart }}" alt="Daily Sales Trend Chart">
+                    {% else %}
+                    <p class="text-gray-400">No daily sales data available to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-xl shadow-lg">
+                <h2 class="text-white text-lg font-semibold mb-3">Monthly Profit Overview</h2>
+                <div class="chart-container">
+                    {% if dashboard_data.monthly_profit_chart %}
+                    <img src="{{ dashboard_data.monthly_profit_chart }}" alt="Monthly Profit Overview Chart">
+                    {% else %}
+                    <p class="text-gray-400">No monthly profit data available to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-xl shadow-lg">
+                <h2 class="text-white text-lg font-semibold mb-3">Top 5 Products by Sales</h2>
+                <div class="chart-container">
+                    {% if dashboard_data.top_products_chart %}
+                    <img src="{{ dashboard_data.top_products_chart }}" alt="Top 5 Products by Sales Chart">
+                    {% else %}
+                    <p class="text-gray-400">No top products data available to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-xl shadow-lg">
+                <h2 class="text-white text-lg font-semibold mb-3">Sales by Category</h2>
+                <div class="chart-container">
+                    {% if dashboard_data.category_split_chart %}
+                    <img src="{{ dashboard_data.category_split_chart }}" alt="Sales by Category Chart">
+                    {% else %}
+                    <p class="text-gray-400">No sales by category data available to display.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10" style="margin-top: 6%;">
+            <div class="card-bg p-5 rounded-xl shadow-lg text-center">
+                <h3 class="text-gray-400 text-base font-medium mb-1.5">Total Income</h3>
+                <p class="text-white text-2xl font-bold">{{ dashboard_data.summary_cards.total_income }}</p>
+                <p class="text-green-500 text-sm mt-1.5">{{ dashboard_data.summary_cards.income_change_percent }} from
+                    last month</p>
+            </div>
+            <div class="card-bg p-5 rounded-xl shadow-lg text-center">
+                <h3 class="text-gray-400 text-base font-medium mb-1.5">Total Expense</h3>
+                <p class="text-white text-2xl font-bold">{{ dashboard_data.summary_cards.total_expense }}</p>
+                <p class="text-red-500 text-sm mt-1.5">{{ dashboard_data.summary_cards.expense_change_percent }} from
+                    last month</p>
+            </div>
+            <div class="card-bg p-5 rounded-xl shadow-lg text-center">
+                <h3 class="text-gray-400 text-base font-medium mb-1.5">Net Profit</h3>
+                <p class="text-white text-2xl font-bold">{{ dashboard_data.summary_cards.net_profit }}</p>
+                <p class="text-green-500 text-sm mt-1.5">{{ dashboard_data.summary_cards.profit_change_percent }} from
+                    last month</p>
+            </div>
+        </section>
+
+        <section class="card-bg p-4 rounded-xl shadow-lg mt-6">
+            <h2 class="text-white text-lg font-semibold mb-2">Cleaned Data Summary</h2>
+            <ul class="list-disc list-inside text-gray-300 space-y-0.5 text-sm">
+                <li>Total Records Processed: {{ cleaned_summary.total_records_processed }}</li>
+                <li>Valid Records: {{ cleaned_summary.valid_records }} ({{ cleaned_summary.data_accuracy }} accuracy)
+                </li>
+                <li>Date Range: {{ cleaned_summary.date_range }}</li>
+                <li>Currency Used: {{ cleaned_summary.currency_used }}</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="bg-black text-white py-12 md:py-16">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl font-semibold">DashVieww</span>
+                </div>
+                <p class="text-gray-400 text-sm mt-4">Empowering small shopkeepers with effortless sales and profit
+                    tracking.</p>
+                <p class="text-gray-500 text-sm mt-2">Sindhudurg, India</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="{{ url_for('index') }}#home"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Home</a></li>
+                    <li><a href="{{ url_for('index') }}#features"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Features</a></li>
+                    <li><a href="{{ url_for('index') }}#how-it-works"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">How It Works</a>
+                    </li>
+                    <li><a href="{{ url_for('index') }}#faq"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Help
+                            Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Customer
+                            Support</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Privacy
+                            Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Terms of
+                            Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Resources</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Blog</a>
+                    </li>
+                    <li><a href="#"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Guides</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Case
+                            Studies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 text-center text-gray-500 mt-12 pt-8 border-t border-gray-700">
+            &copy; 2024 DashVieww. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', isHidden);
+        });
+
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', false);
+            });
+        });
+    </script>
+</body>
+
+</html>

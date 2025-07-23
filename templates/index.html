@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashVieww</title>
+    <meta name="description"
+        content="DashVieww helps small shopkeepers easily upload sales files (CSV/Excel) and get instant, easy-to-understand insights into their top-selling products, profit margins, and daily/monthly trends.">
+    <meta name="keywords"
+        content="dashboard app, sales tracking, profit tracking, shopkeeper, small business, retail analytics, CSV upload, Excel upload, sales insights, product performance, daily sales, monthly profit">
+    <meta name="author" content="DashVieww Team">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yourwebsite.com/">
+    <meta property="og:title" content="DashVieww – Simple Dashboard App for Shopkeepers to Track Sales & Profit">
+    <meta property="og:description"
+        content="DashVieww helps small shopkeepers easily upload sales files (CSV/Excel) and get instant, easy-to-understand insights into their top-selling products, profit margins, and daily/monthly trends.">
+    <meta property="og:image" content="https://www.yourwebsite.com/DashVieww_social_share.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.yourwebsite.com/">
+    <meta name="twitter:title" content="DashVieww – Simple Dashboard App for Shopkeepers to Track Sales & Profit">
+    <meta name="twitter:description"
+        content="DashVieww helps small shopkeepers easily upload sales files (CSV/Excel) and get instant, easy-to-understand insights into their top-selling products, profit margins, and daily/monthly trends.">
+    <meta name="twitter:image" content="https://www.yourwebsite.com/DashVieww_social_share.png">
+    <link rel="icon" href="" type="image/png">
+    <link rel="canonical" href="https://www.yourwebsite.com/">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-heading {
+            font-size: 2.2rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        @media (min-width: 768px) {
+            .hero-heading {
+                font-size: 2.8rem;
+            }
+
+            .other-heading {
+                font-size: 2rem;
+            }
+        }
+
+        .other-heading {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        .upload-button {
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.75rem;
+            padding: 12px 1.4rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.15s ease-in-out;
+        }
+
+        .upload-button:hover {
+            background-color: #1f2937;
+        }
+
+        .upload-button input[type="file"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .hero-section-bg {
+            background-color: #F2F7FC;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #1f2937;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .message-box button {
+            background-color: #1f2937;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .section-image {
+            height: auto;
+            max-width: 100%;
+            border-radius: 2%;
+            /* Added for improved responsiveness */
+            object-fit: contain; 
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-900">
+
+    <nav class="hero-section-bg w-full mx-auto px-4 py-6 flex items-center justify-between overflow-hidden ">
+        <div class="flex items-center">
+            <span class="text-2xl font-semibold">DashVieww</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+            <a href="#home" class="text-gray-600 hover:text-gray-900 font-medium">Home</a>
+            <a href="#features" class="text-gray-600 hover:text-gray-900 font-medium">Features</a>
+            <a href="#how-it-works" class="text-gray-600 hover:text-gray-900 font-medium">How It Works</a>
+            <a href="#faq" class="text-gray-600 hover:text-gray-900 font-medium">FAQ</a>
+        </div>
+        <div class="hidden md:flex space-x-4">
+            <form id="navbar-upload-form" action="/upload" method="post" enctype="multipart/form-data">
+                <label for="navbar-sales-file-upload"
+                    class="upload-button bg-black text-white hover:bg-gray-700 transition duration-300 ease-in-out">
+                    Upload Your Sales File
+                    <input type="file" id="navbar-sales-file-upload" name="sales_file" accept=".csv, .xls, .xlsx" />
+                </label>
+            </form>
+        </div>
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-gray-600 focus:outline-none" aria-controls="mobile-menu"
+                aria-expanded="false" aria-label="Toggle mobile menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="hidden md:hidden hero-section-bg px-4 pt-2 pb-4 space-y-2 ">
+        <a href="#home" class="block text-gray-600 hover:text-gray-900 font-medium py-2">Home</a>
+        <a href="#features" class="block text-gray-600 hover:text-gray-900 font-medium py-2">Features</a>
+        <a href="#how-it-works" class="block text-gray-600 hover:text-gray-900 font-medium py-2">How It Works</a>
+        <a href="#faq" class="block text-gray-600 hover:text-gray-900 font-medium py-2">FAQ</a>
+        <form id="mobile-upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <label for="mobile-sales-file-upload"
+                class="upload-button w-full bg-black text-white hover:bg-gray-700 font-semibold transition duration-300 ease-in-out">
+                Upload Your Sales File
+                <input type="file" id="mobile-sales-file-upload" name="sales_file" accept=".csv, .xls, .xlsx" />
+            </label>
+        </form>
+    </div>
+
+    <header id="home"
+        class="relative px-4 py-12 md:py-16 flex flex-col items-center justify-center overflow-hidden hero-section-bg fade-in text-center">
+        <div class="container mx-auto flex flex-col items-center justify-center">
+            <div class="relative z-10 text-center md:w-2/3 lg:w-1/2 mb-12 md:mb-0">
+                <h1 class="hero-heading font-extrabold leading-tight mb-6">Turn Your Shop's Sales Data Into Smart
+                    Decisions
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">Upload your Excel or CSV file and instantly see profits,
+                    top-selling
+                    products, and daily trends – no training required.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center items-center">
+                    <form id="hero-upload-form" action="/upload" method="post" enctype="multipart/form-data">
+                        <label for="sales-file-upload"
+                            class="upload-button bg-black text-white hover:bg-gray-700 transition duration-300 ease-in-out">
+                            Upload Your Sales File
+                            <input type="file" id="sales-file-upload" name="sales_file" accept=".csv, .xls, .xlsx" />
+                        </label>
+                    </form>
+                </div>
+                <div class="text-sm text-gray-600 mt-4 max-w-xl mx-auto">
+                    <p class="font-semibold mb-1">Important Note for Data Upload:</p>
+                    <p>Ensure your file has Product Name, Date of Sale, Quantity, and Selling Price columns for
+                        analysis. Cost Price is recommended for profit insights</p>
+                </div>
+                <div id="loading-indicator" class="hidden mt-4 flex items-center justify-center">
+                    <div class="spinner mr-2"></div>
+                    <span class="text-gray-700">Processing data...</span>
+                </div>
+                <div id="messageBoxOverlay" class="message-box-overlay"></div>
+                <div id="messageBox" class="message-box">
+                    <p id="messageBoxText"></p>
+                    <button id="messageBoxClose">OK</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="container mx-auto px-4 py-16 md:py-24 text-center">
+        <h2 class="other-heading font-extrabold leading-tight mb-12">Smart Features for Smarter Shops</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" x2="12" y1="3" y2="15" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">Easy Upload</h3>
+                <p class="text-gray-600">Just select your Excel or CSV file. No formatting needed.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" x2="18" y1="20" y2="10" />
+                        <line x1="12" x2="12" y1="20" y2="4" />
+                        <line x1="6" x2="6" y1="20" y2="14" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">Clear Graphs & Charts</h3>
+                <p class="text-gray-600">Instantly view sales trends, product performance, and profit/loss.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">Daily/Monthly Summaries</h3>
+                <p class="text-gray-600">Automatically show important insights.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center text-center">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <path d="M12 18h.01" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">Works on Any Device</h3>
+                <p class="text-gray-600">No installation. Use on mobile or computer.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="bg-black text-white mx-auto px-4 py-16 md:py-24 text-center">
+        <h2 class="other-heading font-extrabold leading-tight mb-12">How DashVieww Works in 3 Simple Steps</h2>
+        <div
+            class="relative flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16">
+            <div class="flex flex-col items-center text-center max-w-xs">
+                <div class="icon-circle bg-gray-800 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                        <path d="M10 9H8" />
+                        <path d="M16 13H8" />
+                        <path d="M16 17H8" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">Upload Your File</h3>
+                <p class="text-gray-300">Upload sales data from your computer or mobile device (CSV or Excel).</p>
+            </div>
+            <div class="flex flex-col items-center text-center max-w-xs">
+                <div class="icon-circle bg-gray-800 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                        <rect x="9" y="9" width="6" height="6" />
+                        <path d="M15 2v2" />
+                        <path d="M15 20v2" />
+                        <path d="M2 9h2" />
+                        <path d="M2 15h2" />
+                        <path d="M20 9h2" />
+                        <path d="M20 15h2" />
+                        <path d="M9 2v2" />
+                        <path d="M9 20v2" />
+                        <path d="M4 12h2" />
+                        <path d="M18 12h2" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">We Process Everything Automatically</h3>
+                <p class="text-gray-300">DashVieww cleans and analyzes your data in seconds.</p>
+            </div>
+            <div class="flex flex-col items-center text-center max-w-xs">
+                <div class="icon-circle bg-gray-800 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="9" rx="1" />
+                        <rect x="14" y="3" width="7" height="5" rx="1" />
+                        <rect x="14" y="12" width="7" height="9" rx="1" />
+                        <rect x="3" y="16" width="7" height="5" rx="1" />
+                    </svg>
+                </div>
+                <h3 class="font-semibold mb-2">See Your Dashboard</h3>
+                <p class="text-gray-300">Get simple charts, sales reports, and profit summaries instantly – no
+                    confusion.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-16 md:py-24 text-center">
+        <h2 class="other-heading font-extrabold leading-tight mb-12">Your Dashboard: Clear Insights, Simplified.</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="flex justify-center lg:col-span-1">
+                <img src="/static/images/Dashboard-Overview.jpeg" alt="DashVieww Dashboard Overview" class="section-image">
+            </div>
+            <div class="text-left lg:col-span-1">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm space-y-3">
+                    <p class="text-gray-700 font-medium">DashVieww translates your sales data into actionable
+                        intelligence, presenting core metrics in an intuitive format:</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li>Daily & Monthly Trends: Visualize sales patterns and overall profitability.</li>
+                        <li>Top Product Performance: Identify best-sellers to optimize stock and strategy.</li>
+                        <li>Category Contribution: Understand revenue breakdown by product type.</li>
+                        <li>Instant Financial Summaries: Quick glance at Total Income, Expenses, and Net Profit.</li>
+                    </ul>
+                    <p class="text-gray-600">All designed to help you make smarter business decisions with ease.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="container mx-auto px-4 py-16 md:py-24">
+        <h2 class="other-heading font-extrabold leading-tight text-center mb-12">Got Questions? We've Got Answers.
+        </h2>
+        <div class="max-w-3xl mx-auto space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="font-semibold mb-2">Q: Do I need technical knowledge to use DashVieww?</h3>
+                <p class="text-gray-600">A: Not at all! If you can use basic apps like WhatsApp, you can easily use
+                    DashVieww. Our interface is designed to be incredibly user-friendly.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="font-semibold mb-2">Q: What file types are supported for upload?</h3>
+                <p class="text-gray-600">A: DashVieww supports standard Excel files (.xlsx) and Comma Separated Values
+                    (.csv) files. Most accounting and POS systems can export in these formats.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="font-semibold mb-2">Q: Will DashVieww work on my mobile phone or tablet?</h3>
+                <p class="text-gray-600">A: Absolutely! DashVieww is a web-based application, meaning you can access
+                    your dashboard from any device with an internet browser – be it a phone, tablet, or PC.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="font-semibold mb-2">Q: What happens to my sales data after I upload it?</h3>
+                <p class="text-gray-600">A: Your privacy and data security are paramount. Your uploaded files are
+                    solely used to generate your insights and are not stored, shared, or used for any other purpose by
+                    DashVieww. We do not retain your raw data.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-12 md:py-16">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl font-semibold">DashVieww</span>
+                </div>
+                <p class="text-gray-400 text-sm mt-4">Empowering small shopkeepers with effortless sales and profit
+                    tracking.</p>
+                <p class="text-gray-500 text-sm mt-2">Sindhudurg, India</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#home"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Home</a></li>
+                    <li><a href="#features"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Features</a></li>
+                    <li><a href="#how-it-works"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">How It Works</a>
+                    </li>
+                    <li><a href="#faq"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Help
+                            Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Customer
+                            Support</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Privacy
+                            Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Terms of
+                            Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-lg mb-4">Resources</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Blog</a>
+                    </li>
+                    <li><a href="#"
+                            class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Guides</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition duration-300 ease-in-out">Case
+                            Studies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 text-center text-gray-500 mt-12 pt-8 border-t border-gray-700">
+            &copy; 2024 DashVieww. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', isHidden);
+        });
+
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', false);
+            });
+        });
+
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const messageBox = document.getElementById('messageBox');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const messageBoxClose = document.getElementById('messageBoxClose');
+        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+
+        function showMessageBox(message) {
+            messageBoxText.textContent = message;
+            messageBox.style.display = 'flex';
+            messageBoxOverlay.style.display = 'block';
+        }
+
+        function hideMessageBox() {
+            messageBox.style.display = 'none';
+            messageBoxOverlay.style.display = 'none';
+        }
+
+        messageBoxClose.addEventListener('click', hideMessageBox);
+        messageBoxOverlay.addEventListener('click', hideMessageBox);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMessage = urlParams.get('error');
+            if (errorMessage) {
+                showMessageBox(errorMessage);
+            }
+            document.body.classList.add('fade-in');
+        });
+
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+
+        fileInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    loadingIndicator.classList.remove('hidden');
+
+                    const form = this.closest('form');
+                    if (form) {
+                        form.submit();
+                    } else {
+                        showMessageBox("Error: Could not find form to submit file.");
+                        loadingIndicator.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
