@@ -68,4 +68,5 @@ def serve_chart(filename):
     return send_from_directory(app.config['STATIC_FOLDER_CHARTS'], filename)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
+
